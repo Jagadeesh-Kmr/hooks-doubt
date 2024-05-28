@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
 
 import {
@@ -14,7 +13,7 @@ import {
   LoginDetails,
 } from './styledComponents'
 
-const Login = props => {
+const Login = () => {
   const [password, setPassword] = useState('')
   const [userName, setUserName] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
@@ -27,13 +26,7 @@ const Login = props => {
     setPassword(event.target.value)
   }
 
-  const onSubmitSuccess = () => {
-    const {history} = props
-    const jwtToken = ''
-
-    Cookies.set('jwt_token', jwtToken, {expires: 30, path: '/'})
-    history.replace('/')
-  }
+  const onSubmitSuccess = () => <Redirect to="/" />
 
   const onSubmitFailure = error => {
     setErrorMsg(error)
@@ -42,23 +35,17 @@ const Login = props => {
   const onSubmitForm = async event => {
     event.preventDefault()
     const userDetails = {username: userName, password}
-    const url = 'https://apis.ccbp.in/login'
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(userDetails),
-    }
-    const response = await fetch(url, options)
-    const data = await response.json()
-    if (response.ok === true) {
-      onSubmitSuccess(data.jwt_token)
+    const userDetail = JSON.parse(localStorage.getItem('userData'))
+    console.log(userDetail, userDetails)
+
+    if (userDetail === userDetails) {
+      onSubmitSuccess()
     } else {
-      onSubmitFailure(data.error_msg)
+      onSubmitFailure('Invalid Details')
     }
   }
 
-  const jwtToken = Cookies.get('jwt_token')
-
-  if (jwtToken !== undefined) {
+  if (localStorage !== undefined) {
     return <Redirect to="/" />
   }
 
