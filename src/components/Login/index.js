@@ -13,6 +13,8 @@ import {
   LoginDetails,
 } from './styledComponents'
 
+// import ProtectedRoute from '../ProtectedRoute'
+
 const Login = () => {
   const [password, setPassword] = useState('')
   const [userName, setUserName] = useState('')
@@ -36,24 +38,33 @@ const Login = () => {
     event.preventDefault()
     const userDetails = {username: userName, password}
     const userDetail = JSON.parse(localStorage.getItem('userData'))
-    console.log(userDetail, userDetails)
 
-    if (userDetail === userDetails) {
+    const check =
+      userDetail.userName === userDetails.username &&
+      userDetail.password === userDetails.password
+
+    if (check) {
       onSubmitSuccess()
     } else {
-      onSubmitFailure('Invalid Details')
+      onSubmitFailure('*Invalid Details')
     }
   }
+  const userDetails = {username: userName, password}
+  const userDetail = JSON.parse(localStorage.getItem('userData'))
 
-  if (localStorage !== undefined) {
+  const check =
+    userDetail.userName === userDetails.username &&
+    userDetail.password === userDetails.password
+
+  if (check) {
     return <Redirect to="/" />
   }
 
   return (
     <MainContainer>
       <LoginDetails>
-        <p>Username: rahul</p>
-        <p>Password: rahul@2021</p>
+        <p>Username: jagadeesh</p>
+        <p>Password: 1234</p>
       </LoginDetails>
       <FormContainer onSubmit={onSubmitForm}>
         <Heading>Login Form</Heading>

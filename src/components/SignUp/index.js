@@ -27,7 +27,7 @@ const SignUp = () => {
 
   const onSubmitForm = e => {
     e.preventDefault()
-    setUserDetails({UserName: userName, password})
+    setUserDetails({userName, password})
     localStorage.setItem('userData', JSON.stringify(userDetails))
   }
 
